@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { useSite } from "../../context/SiteContext.jsx";
 import { IconArrowLeft, IconEye } from "../../components/site/Icons.jsx";
+import ThemeToggle from "../../components/site/ThemeToggle.jsx";
 
 export default function AdminLogin() {
   const { isAdmin, login, content } = useSite();
@@ -27,8 +28,11 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#f4f0fb] px-4 py-8 sm:px-6 lg:px-8">
-      <div className="grid w-full max-w-6xl items-stretch overflow-hidden rounded-[28px] border border-white bg-white shadow-[0_30px_80px_rgba(19,34,56,0.12)] lg:grid-cols-2">
+    <div className="admin-cms relative flex min-h-screen items-center justify-center bg-[#f4f0fb] px-4 py-8 sm:px-6 lg:px-8 dark:bg-[#0e1624]">
+      <div className="absolute right-4 top-4 z-20 sm:right-6 sm:top-6">
+        <ThemeToggle />
+      </div>
+      <div className="grid w-full max-w-6xl items-stretch overflow-hidden rounded-[28px] border border-white bg-white shadow-[0_30px_80px_rgba(19,34,56,0.12)] lg:grid-cols-2 dark:border-white/10 dark:bg-[#162033] dark:shadow-[0_30px_80px_rgba(0,0,0,0.35)]">
         <aside className="relative hidden h-full flex-col justify-between overflow-hidden bg-navy p-10 text-white lg:flex">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(153,41,251,0.45),transparent_40%),radial-gradient(circle_at_80%_80%,rgba(99,102,241,0.35),transparent_35%)]" />
           <div className="relative">
@@ -66,10 +70,10 @@ export default function AdminLogin() {
           </div>
         </aside>
 
-        <div className="flex h-full items-center justify-center bg-white/90 px-6 py-10 sm:px-10">
+        <div className="flex h-full items-center justify-center bg-white/90 px-6 py-10 sm:px-10 dark:bg-[#162033]">
           <div className="w-full max-w-md">
             <div className="mb-8 text-center lg:text-left">
-              <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-picto-primary to-violet-700 text-xl font-bold text-white shadow-lg shadow-fuchsia-200 lg:mx-0">
+              <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-picto-primary to-violet-700 text-xl font-bold text-white shadow-lg shadow-fuchsia-200 lg:mx-0 dark:shadow-none">
                 {content.site.logoText || "A"}
               </div>
               <h2 className="text-2xl font-semibold text-ink">Welcome back</h2>
@@ -113,7 +117,7 @@ export default function AdminLogin() {
                 </div>
               </div>
               {error ? (
-                <div className="rounded-xl border border-rose-100 bg-rose-50 px-3 py-2 text-sm text-rose-600">
+                <div className="rounded-xl border border-rose-100 bg-rose-50 px-3 py-2 text-sm text-rose-600 dark:border-rose-400/30 dark:bg-rose-500/10 dark:text-rose-300">
                   {error}
                 </div>
               ) : null}

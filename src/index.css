@@ -204,7 +204,7 @@ html.dark .swiper-pagination-bullet {
 }
 
 .admin-input {
-  @apply w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-800 outline-none transition focus:border-picto-primary focus:ring-4 focus:ring-picto-primary/10 dark:border-white/10 dark:bg-white/5 dark:text-slate-100 dark:placeholder:text-slate-500;
+  @apply w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-800 focus:border-picto-primary focus:ring-4 focus:ring-picto-primary/10 dark:border-white/10 dark:bg-[#1a2436] dark:text-slate-100 dark:placeholder:text-slate-400;
 }
 
 .login-field {
@@ -221,8 +221,21 @@ html.dark .swiper-pagination-bullet {
   -webkit-text-fill-color: #000;
 }
 
+html.dark .login-field {
+  color: #e9eef6 !important;
+  background-color: #1a2436 !important;
+  caret-color: #e9eef6;
+  color-scheme: dark;
+  -webkit-text-fill-color: #e9eef6;
+}
+
+html.dark .login-field::placeholder {
+  color: #c5ceda !important;
+  -webkit-text-fill-color: #c5ceda;
+}
+
 .admin-label {
-  @apply mb-1.5 block text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500;
+  @apply mb-1.5 block text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500 dark:text-slate-400;
 }
 
 .project-hero-mask {

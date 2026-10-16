@@ -26,19 +26,19 @@ export function ConfirmDialog({
       <div
         role="dialog"
         aria-modal="true"
-        className="w-full max-w-md overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_30px_80px_rgba(19,34,56,0.25)]"
+        className="w-full max-w-md overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_30px_80px_rgba(19,34,56,0.25)] dark:border-white/10 dark:bg-surface dark:shadow-[0_30px_80px_rgba(0,0,0,0.45)]"
       >
-        <div className="border-b border-slate-100 bg-gradient-to-r from-fuchsia-50 via-white to-violet-50 px-6 py-4">
+        <div className="border-b border-slate-100 bg-gradient-to-r from-fuchsia-50 via-white to-violet-50 px-6 py-4 dark:border-white/10 dark:from-picto-primary/20 dark:via-surface dark:to-surface">
           <h3 className="text-lg font-semibold text-ink">{title}</h3>
         </div>
         <div className="px-6 py-5">
-          <p className="text-sm leading-7 text-slate-600">{message}</p>
+          <p className="text-sm leading-7 text-slate-600 dark:text-slate-300">{message}</p>
         </div>
-        <div className="flex justify-end gap-3 border-t border-slate-100 bg-slate-50 px-6 py-4">
+        <div className="flex justify-end gap-3 border-t border-slate-100 bg-slate-50 px-6 py-4 dark:border-white/10 dark:bg-white/5">
           <button
             type="button"
             onClick={onCancel}
-            className="cursor-pointer rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100"
+            className="cursor-pointer rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10"
           >
             {cancelLabel}
           </button>
@@ -100,7 +100,7 @@ export function ImageField({ label, value, onChange }) {
   };
 
   return (
-    <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50/80 p-4">
+    <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50/80 p-4 dark:border-white/15 dark:bg-white/5">
       <span className="admin-label">{label}</span>
       <div className="mt-2 flex flex-col gap-4 sm:flex-row sm:items-start">
         <div className="relative shrink-0">
@@ -111,7 +111,7 @@ export function ImageField({ label, value, onChange }) {
               className="h-24 w-24 rounded-2xl border border-white object-cover shadow-md ring-1 ring-slate-200"
             />
           ) : (
-            <div className="grid h-24 w-24 place-items-center rounded-2xl bg-white text-xs text-slate-400 ring-1 ring-slate-200">
+            <div className="grid h-24 w-24 place-items-center rounded-2xl bg-white text-xs text-slate-400 ring-1 ring-slate-200 dark:bg-white/5 dark:text-slate-400 dark:ring-white/10">
               No image
             </div>
           )}
@@ -126,7 +126,7 @@ export function ImageField({ label, value, onChange }) {
             }}
             placeholder="/images/... or paste an image URL"
           />
-          <label className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm hover:border-picto-primary hover:text-picto-primary">
+          <label className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm hover:border-picto-primary hover:text-picto-primary dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:shadow-none">
             <span>Upload image</span>
             <input type="file" accept="image/*" onChange={onFile} className="hidden" />
           </label>
@@ -143,24 +143,24 @@ export function ImageField({ label, value, onChange }) {
 
 export function SectionCard({ title, description, badge, children, icon }) {
   return (
-    <section className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-[0_10px_40px_rgba(19,34,56,0.05)]">
-      <div className="flex items-start justify-between gap-4 border-b border-slate-100 bg-gradient-to-r from-fuchsia-50/80 via-white to-violet-50/40 px-5 py-4 md:px-6">
+    <section className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-[0_10px_40px_rgba(19,34,56,0.05)] dark:border-white/10 dark:bg-surface dark:shadow-none">
+      <div className="flex items-start justify-between gap-4 border-b border-slate-100 bg-gradient-to-r from-fuchsia-50/80 via-white to-violet-50/40 px-5 py-4 md:px-6 dark:border-white/10 dark:from-picto-primary/20 dark:via-surface dark:to-surface">
         <div className="flex items-start gap-3">
           {icon ? (
-            <span className="mt-0.5 grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-white text-picto-primary shadow-sm ring-1 ring-fuchsia-100">
+            <span className="mt-0.5 grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-white text-picto-primary shadow-sm ring-1 ring-fuchsia-100 dark:bg-white/5 dark:ring-white/10 dark:shadow-none">
               {icon}
             </span>
           ) : null}
           <div>
             <div className="flex flex-wrap items-center gap-2">
-              <h3 className="text-lg font-semibold text-slate-900">{title}</h3>
+              <h3 className="text-lg font-semibold text-ink">{title}</h3>
               {badge ? (
                 <span className="rounded-full bg-picto-primary/10 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-picto-primary">
                   {badge}
                 </span>
               ) : null}
             </div>
-            {description ? <p className="mt-1 text-sm leading-6 text-slate-500">{description}</p> : null}
+            {description ? <p className="mt-1 text-sm leading-6 text-slate-500 dark:text-slate-400">{description}</p> : null}
           </div>
         </div>
       </div>
@@ -171,13 +171,13 @@ export function SectionCard({ title, description, badge, children, icon }) {
 
 export function SaveBar({ onSave, saving, saved, label = "Save changes" }) {
   return (
-    <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3">
-      <p className="text-xs text-slate-500">
+    <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3 dark:border-white/10 dark:bg-white/5">
+      <p className="text-xs text-slate-500 dark:text-slate-400">
         {saved ? "Latest edits are stored in the database." : "Click save to publish this section to the website."}
       </p>
       <div className="flex items-center gap-3">
         {saved ? (
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-700">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
             Saved
           </span>
@@ -200,8 +200,8 @@ export function ListToolbar({ onAdd, addLabel, confirmMessage }) {
 
   return (
     <>
-      <div className="flex items-center justify-between gap-3 rounded-2xl border border-fuchsia-100 bg-fuchsia-50/50 px-4 py-3">
-        <p className="text-sm text-slate-600">Add, edit, or remove items in this list.</p>
+      <div className="flex items-center justify-between gap-3 rounded-2xl border border-fuchsia-100 bg-fuchsia-50/50 px-4 py-3 dark:border-picto-primary/25 dark:bg-picto-primary/10">
+        <p className="text-sm text-slate-600 dark:text-slate-300">Add, edit, or remove items in this list.</p>
         <button
           type="button"
           onClick={() => setOpen(true)}
@@ -231,7 +231,7 @@ export function ItemCard({ title, onRemove, children, index, removeMessage }) {
 
   return (
     <>
-      <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-4 shadow-sm">
+      <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-4 shadow-sm dark:border-white/10 dark:from-white/5 dark:to-surface dark:shadow-none">
         <div className="mb-4 flex items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             {typeof index === "number" ? (
@@ -239,12 +239,12 @@ export function ItemCard({ title, onRemove, children, index, removeMessage }) {
                 {index + 1}
               </span>
             ) : null}
-            <h4 className="font-semibold text-slate-800">{title}</h4>
+            <h4 className="font-semibold text-ink">{title}</h4>
           </div>
           <button
             type="button"
             onClick={() => setOpen(true)}
-            className="cursor-pointer rounded-lg px-2.5 py-1 text-sm font-medium text-rose-600 hover:bg-rose-50"
+            className="cursor-pointer rounded-lg px-2.5 py-1 text-sm font-medium text-rose-600 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-500/15"
           >
             Remove
           </button>
@@ -278,10 +278,10 @@ export function StatCard({ label, value, hint, tone = "violet", onClick }) {
     <button
       type="button"
       onClick={onClick}
-      className="group w-full cursor-pointer overflow-hidden rounded-3xl border border-slate-200 bg-white p-5 text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+      className="group w-full cursor-pointer overflow-hidden rounded-3xl border border-slate-200 bg-white p-5 text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-white/10 dark:bg-surface dark:shadow-none dark:hover:bg-white/5"
     >
       <div className={`mb-4 h-1.5 w-12 rounded-full bg-gradient-to-r ${tones[tone]}`} />
-      <p className="text-sm text-slate-500">{label}</p>
+      <p className="text-sm text-slate-500 dark:text-slate-400">{label}</p>
       <p className="mt-1 text-3xl font-semibold tracking-tight text-ink">{value}</p>
       {hint ? <p className="mt-2 text-xs text-slate-400 group-hover:text-picto-primary">{hint}</p> : null}
     </button>
@@ -290,7 +290,7 @@ export function StatCard({ label, value, hint, tone = "violet", onClick }) {
 
 export function Tip({ children }) {
   return (
-    <div className="rounded-2xl border border-amber-100 bg-amber-50 px-4 py-3 text-sm leading-6 text-amber-900">
+    <div className="rounded-2xl border border-amber-100 bg-amber-50 px-4 py-3 text-sm leading-6 text-amber-900 dark:border-amber-400/25 dark:bg-amber-500/10 dark:text-amber-200">
       {children}
     </div>
   );

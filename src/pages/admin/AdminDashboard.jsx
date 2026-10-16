@@ -13,6 +13,7 @@ import {
 } from "../../components/admin/Fields.jsx";
 import { AdminNavIcon } from "../../components/admin/AdminNavIcons.jsx";
 import { useSite } from "../../context/SiteContext.jsx";
+import ThemeToggle from "../../components/site/ThemeToggle.jsx";
 
 const tabGroups = [
   {
@@ -227,18 +228,18 @@ export default function AdminDashboard() {
 
   if (!ready) {
     return (
-      <div className="grid min-h-screen place-items-center bg-[#f7f3ff] text-sm font-medium text-slate-500">
+      <div className="admin-cms grid min-h-screen place-items-center bg-[#f7f3ff] text-sm font-medium text-slate-500 dark:bg-[#0e1624] dark:text-slate-300">
         Loading admin panel…
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[linear-gradient(180deg,#f7f3ff_0%,#f5f7fb_220px,#eef1f6_100%)]">
-      <header className="sticky top-0 z-30 border-b border-white/70 bg-white/85 backdrop-blur-xl">
+    <div className="admin-cms min-h-screen bg-[linear-gradient(180deg,#f7f3ff_0%,#f5f7fb_220px,#eef1f6_100%)] dark:bg-[#0e1624] dark:bg-none">
+      <header className="sticky top-0 z-30 border-b border-white/70 bg-white/85 backdrop-blur-xl dark:border-white/10 dark:bg-[#0e1624]/90">
         <div className="mx-auto flex w-full flex-wrap items-center justify-between gap-4 px-4 py-4 xl:px-6">
           <div className="flex items-center gap-3">
-            <div className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-picto-primary to-violet-700 text-sm font-bold text-white shadow-md shadow-fuchsia-200">
+            <div className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-picto-primary to-violet-700 text-sm font-bold text-white shadow-md shadow-fuchsia-200 dark:shadow-none">
               {content.site.logoText || "A"}
             </div>
             <div>
@@ -248,7 +249,7 @@ export default function AdminDashboard() {
           </div>
           <div className="flex flex-wrap items-center gap-2">
             {saved ? (
-              <span className="rounded-full bg-emerald-50 px-3 py-1.5 text-sm font-medium text-emerald-700">
+              <span className="rounded-full bg-emerald-50 px-3 py-1.5 text-sm font-medium text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300">
                 {saved}
               </span>
             ) : null}
@@ -260,18 +261,19 @@ export default function AdminDashboard() {
             >
               {saving ? "Saving..." : "Save all"}
             </button>
+            <ThemeToggle />
             <Link
               to="/"
               target="_blank"
               rel="noreferrer"
-              className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-ink hover:border-picto-primary hover:text-picto-primary"
+              className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-ink hover:border-picto-primary hover:text-picto-primary dark:border-white/10 dark:bg-white/5 dark:text-slate-100"
             >
               View website
             </Link>
             <button
               type="button"
               onClick={logout}
-              className="rounded-xl bg-navy px-4 py-2.5 text-sm font-semibold text-white"
+              className="rounded-xl bg-navy px-4 py-2.5 text-sm font-semibold text-white dark:bg-white/10 dark:ring-1 dark:ring-white/15"
             >
               Logout
             </button>
@@ -280,11 +282,11 @@ export default function AdminDashboard() {
       </header>
 
       <div className="mx-auto grid w-full gap-6 px-4 py-6 lg:grid-cols-[270px_1fr] xl:px-6">
-        <aside className="h-fit overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-[0_12px_40px_rgba(19,34,56,0.06)] lg:sticky lg:top-24">
-          <div className="border-b border-slate-100 bg-gradient-to-br from-fuchsia-50 to-white px-4 py-4">
+        <aside className="h-fit overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-[0_12px_40px_rgba(19,34,56,0.06)] lg:sticky lg:top-24 dark:border-white/10 dark:bg-surface dark:shadow-none">
+          <div className="border-b border-slate-100 bg-gradient-to-br from-fuchsia-50 to-white px-4 py-4 dark:border-white/10 dark:from-picto-primary/20 dark:to-surface">
             <p className="text-sm font-semibold text-ink">Signed in as</p>
-            <p className="mt-1 text-sm text-slate-500">{credentials.username || "admin"}</p>
-            <div className="mt-3 flex items-center gap-2 rounded-xl bg-white px-3 py-2 text-xs text-slate-500 ring-1 ring-slate-100">
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{credentials.username || "admin"}</p>
+            <div className="mt-3 flex items-center gap-2 rounded-xl bg-white px-3 py-2 text-xs text-slate-500 ring-1 ring-slate-100 dark:bg-white/5 dark:text-slate-300 dark:ring-white/10">
               <span className="h-2 w-2 rounded-full bg-emerald-500" />
               Database connected
             </div>
@@ -292,7 +294,7 @@ export default function AdminDashboard() {
           <nav className="max-h-[70vh] space-y-4 overflow-y-auto p-3">
             {tabGroups.map((group) => (
               <div key={group.title}>
-                <p className="mb-2 px-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">
+                <p className="mb-2 px-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400 dark:text-slate-500">
                   {group.title}
                 </p>
                 <div className="space-y-1">
@@ -303,16 +305,16 @@ export default function AdminDashboard() {
                       onClick={() => setTab(item.id)}
                       className={`group flex w-full items-center justify-between rounded-2xl px-3 py-2.5 text-left text-sm transition ${
                         tab === item.id
-                          ? "bg-gradient-to-r from-fuchsia-50 to-violet-50 font-semibold text-picto-primary ring-1 ring-fuchsia-100"
-                          : "text-slate-600 hover:bg-slate-50"
+                          ? "bg-gradient-to-r from-fuchsia-50 to-violet-50 font-semibold text-picto-primary ring-1 ring-fuchsia-100 dark:from-picto-primary/20 dark:to-violet-500/10 dark:ring-white/10"
+                          : "text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-white/5"
                       }`}
                     >
                       <span className="flex items-center gap-2.5">
                         <span
                           className={`grid h-9 w-9 place-items-center rounded-xl transition ${
                             tab === item.id
-                              ? "bg-gradient-to-br from-picto-primary to-violet-600 text-white shadow-md shadow-fuchsia-200"
-                              : "bg-slate-100 text-slate-500 group-hover:bg-fuchsia-50 group-hover:text-picto-primary"
+                              ? "bg-gradient-to-br from-picto-primary to-violet-600 text-white shadow-md shadow-fuchsia-200 dark:shadow-none"
+                              : "bg-slate-100 text-slate-500 group-hover:bg-fuchsia-50 group-hover:text-picto-primary dark:bg-white/10 dark:text-slate-300 dark:group-hover:bg-picto-primary/20"
                           }`}
                         >
                           <AdminNavIcon id={item.id} />
@@ -333,17 +335,17 @@ export default function AdminDashboard() {
         </aside>
 
         <div className="space-y-5">
-          <div className="rounded-3xl border border-slate-200/80 bg-white p-5 shadow-sm md:p-6">
+          <div className="rounded-3xl border border-slate-200/80 bg-white p-5 shadow-sm md:p-6 dark:border-white/10 dark:bg-surface dark:shadow-none">
             <div className="flex flex-wrap items-end justify-between gap-3">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-picto-primary">
                   {currentTab?.label || "Section"}
                 </p>
                 <h2 className="mt-1 text-2xl font-semibold text-ink">{currentMeta.title}</h2>
-                <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">{currentMeta.subtitle}</p>
+                <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500 dark:text-slate-400">{currentMeta.subtitle}</p>
               </div>
-              <div className="rounded-2xl bg-slate-50 px-4 py-3 text-right">
-                <p className="text-[11px] uppercase tracking-wide text-slate-400">Live site</p>
+              <div className="rounded-2xl bg-slate-50 px-4 py-3 text-right dark:bg-white/5">
+                <p className="text-[11px] uppercase tracking-wide text-slate-400 dark:text-slate-500">Live site</p>
                 <p className="text-sm font-semibold text-ink">{content.site.title}</p>
               </div>
             </div>
@@ -388,8 +390,8 @@ export default function AdminDashboard() {
                       ["Process steps", content.process.steps.length],
                       ["Menu links", content.nav.items.length],
                     ].map(([label, value]) => (
-                      <div key={label} className="rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3">
-                        <p className="text-xs uppercase tracking-wide text-slate-400">{label}</p>
+                      <div key={label} className="rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3 dark:border-white/10 dark:bg-white/5">
+                        <p className="text-xs uppercase tracking-wide text-slate-400 dark:text-slate-500">{label}</p>
                         <p className="mt-1 text-xl font-semibold text-ink">{value}</p>
                       </div>
                     ))}
@@ -421,7 +423,7 @@ export default function AdminDashboard() {
                         key={id}
                         type="button"
                         onClick={() => setTab(id)}
-                        className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white px-4 py-3 text-left text-sm font-medium text-ink transition hover:border-picto-primary hover:bg-fuchsia-50 hover:text-picto-primary"
+                        className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white px-4 py-3 text-left text-sm font-medium text-ink transition hover:border-picto-primary hover:bg-fuchsia-50 hover:text-picto-primary dark:border-white/10 dark:bg-white/5 dark:hover:bg-picto-primary/15"
                       >
                         <span>{label}</span>
                         <span>→</span>
@@ -682,7 +684,7 @@ export default function AdminDashboard() {
                     <ImageField label="Cover image" value={item.image} onChange={(v) => updateList("portfolio", "items", index, "image", v)} />
                   </div>
                   <p className="md:col-span-2 text-xs text-slate-400">
-                    Case Study opens at <code className="text-slate-500">/projects/{item.id}</code>
+                    Case Study opens at <code className="text-slate-500 dark:text-slate-300">/projects/{item.id}</code>
                   </p>
                 </ItemCard>
               ))}
@@ -870,7 +872,7 @@ export default function AdminDashboard() {
               badge={`${messages.length} total`}
             >
               {messages.length === 0 ? (
-                <div className="rounded-3xl border border-dashed border-slate-200 bg-slate-50 px-6 py-12 text-center">
+                <div className="rounded-3xl border border-dashed border-slate-200 bg-slate-50 px-6 py-12 text-center dark:border-white/15 dark:bg-white/5">
                   <p className="text-lg font-semibold text-ink">No messages yet</p>
                   <p className="mt-2 text-sm text-muted">
                     When visitors submit the contact form, their details will appear here.
@@ -879,7 +881,7 @@ export default function AdminDashboard() {
               ) : (
                 <>
                   <div className="flex items-center justify-between gap-3">
-                    <p className="text-sm text-slate-500">{messages.length} message(s) in the inbox</p>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">{messages.length} message(s) in the inbox</p>
                     <button
                       type="button"
                       onClick={() =>
@@ -894,7 +896,7 @@ export default function AdminDashboard() {
                           },
                         })
                       }
-                      className="rounded-xl px-3 py-2 text-sm font-medium text-rose-600 hover:bg-rose-50"
+                      className="rounded-xl px-3 py-2 text-sm font-medium text-rose-600 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-500/15"
                     >
                       Clear all
                     </button>
@@ -903,7 +905,7 @@ export default function AdminDashboard() {
                     {messages.map((msg) => (
                       <article
                         key={msg.id}
-                        className="rounded-3xl border border-slate-200 bg-gradient-to-br from-white to-slate-50 p-5 shadow-sm"
+                        className="rounded-3xl border border-slate-200 bg-gradient-to-br from-white to-slate-50 p-5 shadow-sm dark:border-white/10 dark:from-surface dark:to-[#1a2436] dark:shadow-none"
                       >
                         <div className="flex items-start justify-between gap-3">
                           <div className="flex items-start gap-3">
@@ -919,7 +921,7 @@ export default function AdminDashboard() {
                             <button
                               type="button"
                               onClick={() => setViewingMessage(msg)}
-                              className="cursor-pointer rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-picto-primary hover:border-picto-primary hover:bg-fuchsia-50"
+                              className="cursor-pointer rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-picto-primary hover:border-picto-primary hover:bg-fuchsia-50 dark:border-white/10 dark:bg-white/5 dark:hover:bg-picto-primary/15"
                             >
                               View
                             </button>
@@ -938,7 +940,7 @@ export default function AdminDashboard() {
                                   },
                                 })
                               }
-                              className="cursor-pointer rounded-xl px-3 py-1.5 text-sm font-medium text-rose-600 hover:bg-rose-50"
+                              className="cursor-pointer rounded-xl px-3 py-1.5 text-sm font-medium text-rose-600 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-500/15"
                             >
                               Delete
                             </button>
@@ -948,7 +950,7 @@ export default function AdminDashboard() {
                           {[msg.subject, msg.budget, msg.location].filter(Boolean).map((chip) => (
                             <span
                               key={chip}
-                              className="rounded-full bg-fuchsia-50 px-3 py-1 text-xs font-medium text-picto-primary"
+                              className="rounded-full bg-fuchsia-50 px-3 py-1 text-xs font-medium text-picto-primary dark:bg-picto-primary/15"
                             >
                               {chip}
                             </span>
@@ -1016,16 +1018,16 @@ export default function AdminDashboard() {
                   <button
                     type="button"
                     onClick={exportJson}
-                    className="rounded-3xl border border-slate-200 bg-white p-5 text-left shadow-sm hover:border-picto-primary"
+                    className="rounded-3xl border border-slate-200 bg-white p-5 text-left shadow-sm hover:border-picto-primary dark:border-white/10 dark:bg-surface dark:shadow-none"
                   >
                     <p className="text-sm font-semibold text-ink">Export JSON</p>
-                    <p className="mt-2 text-xs leading-5 text-slate-500">
+                    <p className="mt-2 text-xs leading-5 text-slate-500 dark:text-slate-400">
                       Download a full backup of the current website content.
                     </p>
                   </button>
-                  <label className="cursor-pointer rounded-3xl border border-slate-200 bg-white p-5 text-left shadow-sm hover:border-picto-primary">
+                  <label className="cursor-pointer rounded-3xl border border-slate-200 bg-white p-5 text-left shadow-sm hover:border-picto-primary dark:border-white/10 dark:bg-surface dark:shadow-none">
                     <p className="text-sm font-semibold text-ink">Import JSON</p>
-                    <p className="mt-2 text-xs leading-5 text-slate-500">
+                    <p className="mt-2 text-xs leading-5 text-slate-500 dark:text-slate-400">
                       Restore content from a previously exported backup file.
                     </p>
                     <input type="file" accept="application/json" className="hidden" onChange={importJson} />
@@ -1045,9 +1047,9 @@ export default function AdminDashboard() {
                         },
                       })
                     }
-                    className="rounded-3xl border border-rose-100 bg-rose-50 p-5 text-left hover:border-rose-300"
+                    className="rounded-3xl border border-rose-100 bg-rose-50 p-5 text-left hover:border-rose-300 dark:border-rose-400/30 dark:bg-rose-500/10"
                   >
-                    <p className="text-sm font-semibold text-rose-700">Reset to original</p>
+                    <p className="text-sm font-semibold text-rose-700 dark:text-rose-300">Reset to original</p>
                     <p className="mt-2 text-xs leading-5 text-rose-500">
                       Replace all editable content with the default homepage copy.
                     </p>
@@ -1080,8 +1082,8 @@ export default function AdminDashboard() {
 
       {viewingMessage ? (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/45 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-xl overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_30px_80px_rgba(19,34,56,0.25)]">
-            <div className="flex items-start justify-between gap-3 border-b border-slate-100 bg-gradient-to-r from-fuchsia-50 via-white to-violet-50 px-6 py-4">
+          <div className="w-full max-w-xl overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_30px_80px_rgba(19,34,56,0.25)] dark:border-white/10 dark:bg-surface dark:shadow-[0_30px_80px_rgba(0,0,0,0.45)]">
+            <div className="flex items-start justify-between gap-3 border-b border-slate-100 bg-gradient-to-r from-fuchsia-50 via-white to-violet-50 px-6 py-4 dark:border-white/10 dark:from-picto-primary/20 dark:via-surface dark:to-surface">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-picto-primary">Message details</p>
                 <h3 className="mt-1 text-xl font-semibold text-ink">{viewingMessage.name}</h3>
@@ -1090,7 +1092,7 @@ export default function AdminDashboard() {
               <button
                 type="button"
                 onClick={() => setViewingMessage(null)}
-                className="cursor-pointer rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-600 hover:bg-slate-50"
+                className="cursor-pointer rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-600 hover:bg-slate-50 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10"
               >
                 Close
               </button>
@@ -1103,14 +1105,14 @@ export default function AdminDashboard() {
                   ["Location", viewingMessage.location],
                   ["Received", new Date(viewingMessage.createdAt).toLocaleString()],
                 ].map(([label, value]) => (
-                  <div key={label} className="rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3">
-                    <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">{label}</p>
+                  <div key={label} className="rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3 dark:border-white/10 dark:bg-white/5">
+                    <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">{label}</p>
                     <p className="mt-1 text-sm font-medium text-ink">{value || "—"}</p>
                   </div>
                 ))}
               </div>
-              <div className="rounded-2xl border border-slate-100 bg-white px-4 py-4">
-                <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">Message</p>
+              <div className="rounded-2xl border border-slate-100 bg-white px-4 py-4 dark:border-white/10 dark:bg-white/5">
+                <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">Message</p>
                 <p className="mt-2 whitespace-pre-wrap text-sm leading-7 text-ink">{viewingMessage.message}</p>
               </div>
               {viewingMessage.email ? (
