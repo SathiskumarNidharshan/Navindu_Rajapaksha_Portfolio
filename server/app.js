@@ -19,6 +19,22 @@ export function createApp(db) {
 
   const app = express();
   app.use(express.json({ limit: "6mb" }));
+  // Netlify's function adapter leaves the JSON body as a Buffer, so express.json
+  // never replaces it and login sees an empty form.
+  app.use((req, _res, next) => {
+    if (!Buffer.isBuffer(req.body)) return next();
+    const text = req.body.toString("utf8").trim();
+    if (!text) {
+      req.body = {};
+      return next();
+    }
+    try {
+      req.body = JSON.parse(text);
+    } catch {
+      req.body = {};
+    }
+    next();
+  });
 
   const router = express.Router();
 

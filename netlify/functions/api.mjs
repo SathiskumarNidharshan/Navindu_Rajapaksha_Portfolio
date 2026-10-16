@@ -51,12 +51,27 @@ function normalizeEvent(event) {
   return next;
 }
 
+function asJsonText(value) {
+  const text = String(value ?? "").trim();
+  if (!text) return "";
+  if (text.startsWith("{") || text.startsWith("[")) return text;
+  try {
+    const decoded = Buffer.from(text, "base64").toString("utf8").trim();
+    if (decoded.startsWith("{") || decoded.startsWith("[")) return decoded;
+  } catch {
+    // Keep the original body when it is not base64 JSON.
+  }
+  return text;
+}
+
 function decodeBody(event) {
-  const body = event?.body;
+  const body = event?.body ?? event?.rawBody;
   if (body == null) return "";
   if (typeof body !== "string") return JSON.stringify(body);
-  if (!event.isBase64Encoded) return body;
-  return Buffer.from(body, "base64").toString("utf8");
+  if (event?.isBase64Encoded) {
+    return Buffer.from(body, "base64").toString("utf8");
+  }
+  return asJsonText(body);
 }
 
 export async function handler(event, context) {
@@ -66,14 +81,19 @@ export async function handler(event, context) {
     if (event?.blobs) {
       connectLambda({ ...event, headers: headerMap(event.headers) });
     }
+    const body = decodeBody(event);
     const headers = headerMap(event?.headers);
+    // Netlify rewrites can send content-length: 0 while the JSON body is present.
+    // Express then reads nothing and login looks like an empty form.
+    delete headers["content-length"];
+    headers["content-length"] = String(Buffer.byteLength(body));
     if (!headers["content-type"]) headers["content-type"] = "application/json";
     const safeEvent = {
       ...event,
       isBase64Encoded: false,
       httpMethod: event?.httpMethod || event?.requestContext?.http?.method || "GET",
       headers,
-      body: decodeBody(event),
+      body,
       requestContext: event?.requestContext || { identity: { sourceIp: "" } },
     };
     return await expressHandler(normalizeEvent(safeEvent), context);
