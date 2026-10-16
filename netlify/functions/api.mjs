@@ -52,7 +52,28 @@ function normalizeEvent(event) {
 }
 
 export async function handler(event, context) {
-  // Lambda-style functions do not receive Blobs credentials unless this runs first.
-  if (event?.blobs) connectLambda({ ...event, headers: headerMap(event.headers) });
-  return expressHandler(normalizeEvent(event), context);
+  try {
+    // Blobs reads x-nf-site-id from the event. Keep the original blobs payload and
+    // normalize header names so that lookup succeeds.
+    if (event?.blobs) {
+      connectLambda({ ...event, headers: headerMap(event.headers) });
+    }
+    const safeEvent = {
+      ...event,
+      httpMethod: event?.httpMethod || event?.requestContext?.http?.method || "GET",
+      headers: event?.headers || {},
+      body: event?.body ?? "",
+      requestContext: event?.requestContext || { identity: { sourceIp: "" } },
+    };
+    return await expressHandler(normalizeEvent(safeEvent), context);
+  } catch (error) {
+    console.error(error);
+    return {
+      statusCode: 500,
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        error: error?.message || "Server error. Please try again.",
+      }),
+    };
+  }
 }

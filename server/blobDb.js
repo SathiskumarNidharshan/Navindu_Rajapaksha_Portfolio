@@ -20,6 +20,29 @@ function store() {
 
 const now = () => new Date().toISOString();
 
+function envAdmin() {
+  const username = process.env.ADMIN_USERNAME?.trim();
+  const password = process.env.ADMIN_PASSWORD ?? "";
+  if (!username || !password) return null;
+  return { username, password };
+}
+
+function passwordMatches(password, hash) {
+  if (!hash) return false;
+  try {
+    return bcrypt.compareSync(password, hash);
+  } catch {
+    return false;
+  }
+}
+
+async function writeAdmin(s, username, password) {
+  await s.setJSON(KEYS.admin, {
+    username,
+    password_hash: bcrypt.hashSync(password, 10),
+  });
+}
+
 async function ensureSeeded() {
   const s = store();
   const [content, admin] = await Promise.all([
@@ -30,13 +53,20 @@ async function ensureSeeded() {
   if (!content) {
     await s.setJSON(KEYS.content, defaultContent);
   }
+
+  const fromEnv = envAdmin();
   if (!admin) {
-    const username = process.env.ADMIN_USERNAME || ADMIN_DEFAULTS.username;
-    const password = process.env.ADMIN_PASSWORD || ADMIN_DEFAULTS.password;
-    await s.setJSON(KEYS.admin, {
-      username,
-      password_hash: bcrypt.hashSync(password, 10),
-    });
+    await writeAdmin(
+      s,
+      fromEnv?.username || ADMIN_DEFAULTS.username,
+      fromEnv?.password || ADMIN_DEFAULTS.password
+    );
+  } else if (
+    fromEnv &&
+    (admin.username !== fromEnv.username || !passwordMatches(fromEnv.password, admin.password_hash))
+  ) {
+    // Netlify env vars are the login. A later change must replace the first saved password.
+    await writeAdmin(s, fromEnv.username, fromEnv.password);
   }
   if ((await s.get(KEYS.sessions, { type: "json" })) == null) {
     await s.setJSON(KEYS.sessions, {});
@@ -97,9 +127,13 @@ export async function updateAdmin(username, password) {
 }
 
 export async function verifyAdmin(username, password) {
+  const fromEnv = envAdmin();
+  if (fromEnv && username === fromEnv.username && password === fromEnv.password) {
+    return true;
+  }
   const admin = await getAdmin();
   if (!admin || admin.username !== username) return false;
-  return bcrypt.compareSync(password, admin.password_hash);
+  return passwordMatches(password, admin.password_hash);
 }
 
 export async function createSession() {

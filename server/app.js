@@ -137,9 +137,15 @@ export function createApp(db) {
   app.use("/api", router);
   app.use("/", router);
 
+  app.use((req, res) => {
+    res.status(404).json({ error: `No API route for ${req.method} ${req.path}` });
+  });
+
   app.use((error, _req, res, _next) => {
     console.error(error);
-    res.status(500).json({ error: "Server error. Please try again." });
+    res.status(500).json({
+      error: error?.message || "Server error. Please try again.",
+    });
   });
 
   return app;
