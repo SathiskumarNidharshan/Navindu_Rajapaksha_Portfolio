@@ -9,7 +9,9 @@
 
 [functions]
   node_bundler = "esbuild"
-  external_node_modules = ["@netlify/blobs"]
+  # Bundle @netlify/blobs into the function. Marking it external makes the
+  # Lambda runtime load main.cjs, which cannot require the ESM-only
+  # @netlify/runtime-utils package.
 
 # API must come before the SPA fallback
 [[redirects]]
