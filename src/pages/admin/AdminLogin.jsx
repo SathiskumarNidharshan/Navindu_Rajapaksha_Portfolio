@@ -80,7 +80,7 @@ export default function AdminLogin() {
               <label className="block">
                 <span className="admin-label">Username</span>
                 <input
-                  className="admin-input"
+                  className="admin-input login-field"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="admin"
@@ -94,7 +94,7 @@ export default function AdminLogin() {
                 <div className="relative">
                   <input
                     id="admin-password"
-                    className="admin-input pr-12"
+                    className="admin-input login-field pr-12"
                     type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
