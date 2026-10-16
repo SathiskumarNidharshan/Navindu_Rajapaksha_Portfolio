@@ -122,9 +122,9 @@ export default function AdminLogin() {
               </button>
             </form>
 
-            <div className="mt-6 rounded-2xl bg-slate-50 px-4 py-3 text-center text-xs text-soft-dark">
+            {/* <div className="mt-6 rounded-2xl bg-slate-50 px-4 py-3 text-center text-xs text-soft-dark">
               Default login: <strong>admin</strong> / <strong>admin123</strong>
-            </div>
+            </div> */}
             <Link to="/" className="mt-5 flex items-center justify-center gap-1.5 text-sm font-medium text-picto-primary hover:underline">
               <IconArrowLeft />
               Back to website
