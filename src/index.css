@@ -207,9 +207,18 @@ html.dark .swiper-pagination-bullet {
   @apply w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-800 outline-none transition focus:border-picto-primary focus:ring-4 focus:ring-picto-primary/10 dark:border-white/10 dark:bg-white/5 dark:text-slate-100 dark:placeholder:text-slate-500;
 }
 
+.login-field {
+  color: #000 !important;
+  background-color: #fff !important;
+  caret-color: #000;
+  color-scheme: light;
+  -webkit-text-fill-color: #000;
+}
+
 .login-field::placeholder {
   color: #000 !important;
   opacity: 1 !important;
+  -webkit-text-fill-color: #000;
 }
 
 .admin-label {
