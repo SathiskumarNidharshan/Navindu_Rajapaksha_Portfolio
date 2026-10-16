@@ -1,6 +1,7 @@
 import { getStore } from "@netlify/blobs";
 import bcrypt from "bcryptjs";
 import { ADMIN_DEFAULTS, defaultContent } from "../src/data/defaultContent.js";
+import { buildAdmin } from "./adminEnv.js";
 import { sanitizeContent } from "./sanitizeContent.js";
 
 const STORE_NAME = "portfolio";
@@ -20,9 +21,21 @@ function store() {
 
 const now = () => new Date().toISOString();
 
+function cleanSecret(value) {
+  if (typeof value !== "string") return "";
+  let next = value.trim();
+  if (
+    (next.startsWith('"') && next.endsWith('"') && next.length >= 2) ||
+    (next.startsWith("'") && next.endsWith("'") && next.length >= 2)
+  ) {
+    next = next.slice(1, -1).trim();
+  }
+  return next;
+}
+
 function envAdmin() {
-  const username = process.env.ADMIN_USERNAME?.trim();
-  const password = process.env.ADMIN_PASSWORD ?? "";
+  const username = cleanSecret(process.env.ADMIN_USERNAME) || cleanSecret(buildAdmin.username);
+  const password = cleanSecret(process.env.ADMIN_PASSWORD) || cleanSecret(buildAdmin.password);
   if (!username || !password) return null;
   return { username, password };
 }
@@ -127,13 +140,26 @@ export async function updateAdmin(username, password) {
 }
 
 export async function verifyAdmin(username, password) {
+  const user = cleanSecret(typeof username === "string" ? username : "");
+  const pass = cleanSecret(typeof password === "string" ? password : "");
   const fromEnv = envAdmin();
-  if (fromEnv && username === fromEnv.username && password === fromEnv.password) {
+  if (fromEnv && user === fromEnv.username && pass === fromEnv.password) {
     return true;
   }
   const admin = await getAdmin();
-  if (!admin || admin.username !== username) return false;
-  return passwordMatches(password, admin.password_hash);
+  if (admin && user === cleanSecret(admin.username || "") && passwordMatches(pass, admin.password_hash)) {
+    return true;
+  }
+  if (!fromEnv && user === ADMIN_DEFAULTS.username && pass === ADMIN_DEFAULTS.password) {
+    return true;
+  }
+  console.error("Admin login rejected", {
+    envConfigured: Boolean(fromEnv),
+    usernameReceived: Boolean(user),
+    passwordReceived: Boolean(pass),
+    storedUsername: admin?.username || "",
+  });
+  return false;
 }
 
 export async function createSession() {

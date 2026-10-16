@@ -61,7 +61,19 @@ export function createApp(db) {
 
   router.post("/login", async (req, res, next) => {
     try {
-      const { username, password } = req.body || {};
+      let payload = req.body;
+      if (typeof payload === "string") {
+        try {
+          payload = JSON.parse(payload);
+        } catch {
+          payload = {};
+        }
+      }
+      const username = payload?.username;
+      const password = payload?.password;
+      if (!String(username || "").trim() || !String(password || "").trim()) {
+        return res.status(400).json({ error: "Username and password are required." });
+      }
       if (!(await verifyAdmin(username, password))) {
         return res.status(401).json({ error: "Invalid username or password." });
       }

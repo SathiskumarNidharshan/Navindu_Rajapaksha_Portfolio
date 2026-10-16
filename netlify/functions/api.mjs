@@ -51,6 +51,14 @@ function normalizeEvent(event) {
   return next;
 }
 
+function decodeBody(event) {
+  const body = event?.body;
+  if (body == null) return "";
+  if (typeof body !== "string") return JSON.stringify(body);
+  if (!event.isBase64Encoded) return body;
+  return Buffer.from(body, "base64").toString("utf8");
+}
+
 export async function handler(event, context) {
   try {
     // Blobs reads x-nf-site-id from the event. Keep the original blobs payload and
@@ -58,11 +66,14 @@ export async function handler(event, context) {
     if (event?.blobs) {
       connectLambda({ ...event, headers: headerMap(event.headers) });
     }
+    const headers = headerMap(event?.headers);
+    if (!headers["content-type"]) headers["content-type"] = "application/json";
     const safeEvent = {
       ...event,
+      isBase64Encoded: false,
       httpMethod: event?.httpMethod || event?.requestContext?.http?.method || "GET",
-      headers: event?.headers || {},
-      body: event?.body ?? "",
+      headers,
+      body: decodeBody(event),
       requestContext: event?.requestContext || { identity: { sourceIp: "" } },
     };
     return await expressHandler(normalizeEvent(safeEvent), context);
